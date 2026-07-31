@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>CLASH BLADE - T ZERONE Gaming Platform</title>
+<link rel="stylesheet" href="game_styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div id="game-app">
+
+    <!-- HUD -->
+    <header id="hud" class="hud hidden">
+      <div class="hud-left">
+        <span class="hud-label">SCORE</span>
+        <span class="hud-value" id="hud-score">0</span>
+        <span class="hud-gold-sub"><span class="gold-dot"></span><span id="hud-gold">0</span></span>
+      </div>
+
+      <div class="hud-center">
+        <div class="hud-label hud-wave-label">WAVE <span id="hud-wave">1</span></div>
+        <div class="hp-bar-track">
+          <div class="hp-bar-fill" id="hp-bar-fill"></div>
+        </div>
+      </div>
+
+      <div class="hud-right">
+        <span class="hud-label">BEST</span>
+        <span class="hud-value" id="hud-best">0</span>
+      </div>
+    </header>
+
+    <button id="pause-btn" class="icon-btn hidden" aria-label="Pause">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+    </button>
+
+    <div id="hp-vignette" class="hp-vignette"></div>
+
+    <div id="wave-banner" class="wave-banner" aria-hidden="true"></div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Virtual joystick -->
+    <div id="touch-zone" class="touch-zone hidden"></div>
+    <div id="joy-base" class="joy-base hidden">
+      <div id="joy-knob" class="joy-knob"></div>
+    </div>
+
+    <!-- Action buttons -->
+    <div id="action-cluster" class="action-cluster hidden">
+      <button id="btn-block" class="act-btn act-small" aria-label="Block">
+        <span class="act-glyph">&#128737;</span>
+        <span class="act-tag">BLOCK</span>
+      </button>
+      <button id="btn-dash" class="act-btn act-small" aria-label="Dash">
+        <div class="cd" id="cd-dash"></div>
+        <span class="act-glyph">&#9889;</span>
+        <span class="act-tag">DASH</span>
+      </button>
+      <button id="btn-heavy" class="act-btn act-small" aria-label="Heavy Attack">
+        <div class="cd" id="cd-heavy"></div>
+        <span class="act-glyph">&#128296;</span>
+        <span class="act-tag">HEAVY</span>
+      </button>
+      <button id="btn-attack" class="act-btn act-big" aria-label="Attack">
+        <span class="act-glyph">&#9876;</span>
+        <span class="act-tag">ATTACK</span>
+      </button>
+    </div>
+
+    <!-- START SCREEN -->
+    <section id="screen-start" class="screen active">
+      <div class="screen-inner">
+        <img class="brand-logo" id="brand-logo" src="https://raw.githubusercontent.com/TARHIT-T0SVX/All-image-t-z/refs/heads/main/TZERONE_OFFICIAL_LOGO.png" alt="T ZERONE" draggable="false">
+        <h1 class="game-title">CLASH BLADE</h1>
+        <p class="game-tagline">Real-time sword battles on the green fields. Duel waves of warriors, slay epic bosses, become a legend.</p>
+
+        <div class="stat-strip">
+          <div class="stat-chip"><span class="stat-chip-label">HIGH SCORE</span><span class="stat-chip-value" id="start-best">0</span></div>
+          <div class="stat-chip stat-chip-hidden"><span class="stat-chip-label">GOLD</span><span class="stat-chip-value credits-value" id="start-gold">0</span></div>
+        </div>
+
+        <button id="start-btn" class="btn btn-action-green multi-pulse game-cta" type="button">START THE GAME</button>
+
+        <div class="menu-row">
+          <button id="barracks-btn" class="btn btn-secondary-soft back-btn-styled" type="button">BARRACKS</button>
+          <button id="settings-btn-start" class="btn btn-secondary-soft back-btn-styled" type="button">SETTINGS</button>
+        </div>
+
+        <div class="howto-card howto-compact">
+          <h3>HOW TO PLAY</h3>
+          <div class="howto-viewport" id="howto-viewport">
+            <ul class="howto-scroll" id="howto-scroll">
+              <li><b>Move:</b> Drag the joystick anywhere on the left, or WASD / Arrow Keys</li>
+              <li><b>Attack:</b> Sword button (or J / tap canvas) — chain 3 hits for a combo finisher</li>
+              <li><b>Heavy:</b> Hammer button (or K) — slow, huge damage and knockback</li>
+              <li><b>Dash:</b> Bolt button (or Shift) — dodge through attacks with invincibility</li>
+              <li><b>Block:</b> Hold the shield (or B) — block right before a hit to PARRY and stun</li>
+              <li><b>Survive</b> waves, defeat a boss every 5th wave, spend Gold in the Barracks</li>
+            </ul>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary-soft back-btn-styled" id="back-home-start" type="button">BACK TO HOME PAGE</button>
+      </div>
+    </section>
+
+    <!-- PAUSE SCREEN -->
+    <section id="screen-pause" class="screen">
+      <div class="screen-inner">
+        <h2 class="screen-heading">PAUSED</h2>
+        <button id="resume-btn" class="btn btn-action-green game-cta" type="button">RESUME</button>
+        <button id="settings-btn-pause" class="btn btn-secondary-soft back-btn-styled" type="button">SETTINGS</button>
+        <button id="restart-from-pause-btn" class="btn btn-secondary-soft back-btn-styled" type="button">RESTART</button>
+        <button class="btn btn-secondary-soft back-btn-styled" id="back-home-pause" type="button">BACK TO HOME PAGE</button>
+      </div>
+    </section>
+
+    <!-- GAME OVER SCREEN -->
+    <section id="screen-over" class="screen">
+      <div class="screen-inner">
+        <div class="game-promo-badge badge-danger">BATTLE ENDED</div>
+        <h2 class="screen-heading">DEFEATED</h2>
+
+        <div class="result-grid">
+          <div class="result-cell"><span class="result-label">SCORE</span><span class="result-value" id="over-score">0</span></div>
+          <div class="result-cell"><span class="result-label">WAVE REACHED</span><span class="result-value" id="over-wave">1</span></div>
+        </div>
+        <div class="result-grid">
+          <div class="result-cell"><span class="result-label">ENEMIES SLAIN</span><span class="result-value" id="over-kills">0</span></div>
+          <div class="result-cell"><span class="result-label">MAX COMBO</span><span class="result-value" id="over-combo">0</span></div>
+        </div>
+        <div class="result-grid">
+          <div class="result-cell"><span class="result-label">BOSSES DEFEATED</span><span class="result-value" id="over-bosses">0</span></div>
+          <div class="result-cell"><span class="result-label">GOLD EARNED</span><span class="result-value credits-value" id="over-gold">0</span></div>
+        </div>
+        <p id="new-best-tag" class="new-best-tag hidden">NEW HIGH SCORE!</p>
+
+        <button id="retry-btn" class="btn btn-action-green multi-pulse game-cta" type="button">FIGHT AGAIN</button>
+        <button id="barracks-btn-over" class="btn btn-secondary-soft back-btn-styled" type="button">BARRACKS</button>
+        <button class="btn btn-secondary-soft back-btn-styled" id="back-home-over" type="button">BACK TO HOME PAGE</button>
+      </div>
+    </section>
+
+    <!-- BARRACKS / SHOP -->
+    <section id="screen-shop" class="screen">
+      <button class="screen-back-top" id="back-from-shop" type="button" aria-label="Back">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="screen-inner">
+        <div class="game-promo-badge">BARRACKS</div>
+        <h2 class="screen-heading">UPGRADES</h2>
+        <div class="stat-strip">
+          <div class="stat-chip"><span class="stat-chip-label">GOLD</span><span class="stat-chip-value credits-value" id="shop-gold">0</span></div>
+        </div>
+
+        <h3 class="hangar-subheading">CHOOSE YOUR CHAMPION</h3>
+        <div class="hero-carousel" id="hero-carousel">
+          <button class="carousel-arrow carousel-arrow-left" id="hero-carousel-prev" type="button" aria-label="Previous champion">&#10094;</button>
+          <div class="hull-list" id="hero-list"></div>
+          <button class="carousel-arrow carousel-arrow-right" id="hero-carousel-next" type="button" aria-label="Next champion">&#10095;</button>
+        </div>
+        <div class="carousel-dots" id="hero-carousel-dots"></div>
+
+        <h3 class="hangar-subheading">BLACKSMITH UPGRADES</h3>
+        <div class="shop-tabs" id="shop-tabs"></div>
+        <div class="shop-list" id="shop-list"></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="screen-settings" class="screen">
+      <button class="screen-back-top" id="back-from-settings" type="button" aria-label="Back">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="screen-inner">
+        <div class="game-promo-badge">CONFIG</div>
+        <h2 class="screen-heading">SETTINGS</h2>
+
+        <div class="settings-card">
+
+          <div class="settings-section">
+            <h4 class="settings-section-title">AUDIO</h4>
+            <div class="settings-row">
+              <div class="settings-row-head">
+                <label for="master-vol">MASTER VOLUME</label>
+                <span class="vol-percent" id="master-vol-pct">100%</span>
+              </div>
+              <input type="range" id="master-vol" min="0" max="100" value="100">
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-head">
+                <label for="home-music-vol">HOME MUSIC VOLUME</label>
+                <span class="vol-percent" id="home-music-vol-pct">60%</span>
+              </div>
+              <input type="range" id="home-music-vol" min="0" max="100" value="60">
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-head">
+                <label for="game-music-vol">GAME MUSIC VOLUME</label>
+                <span class="vol-percent" id="game-music-vol-pct">60%</span>
+              </div>
+              <input type="range" id="game-music-vol" min="0" max="100" value="60">
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-head">
+                <label for="sfx-vol">SFX VOLUME</label>
+                <span class="vol-percent" id="sfx-vol-pct">90%</span>
+              </div>
+              <input type="range" id="sfx-vol" min="0" max="100" value="90">
+            </div>
+          </div>
+
+          <div class="settings-divider"></div>
+
+          <div class="settings-section">
+            <h4 class="settings-section-title">CONTROLS</h4>
+            <div class="settings-row">
+              <div class="settings-row-head">
+                <label for="joy-size">JOYSTICK SIZE</label>
+              </div>
+              <input type="range" id="joy-size" min="80" max="170" value="120">
+            </div>
+            <div class="settings-row settings-row-toggle">
+              <label>JOYSTICK MODE</label>
+              <div class="toggle-pair">
+                <button class="btn-toggle active" id="joy-mode-dynamic" type="button">DYNAMIC</button>
+                <button class="btn-toggle" id="joy-mode-fixed" type="button">FIXED</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-divider"></div>
+
+          <div class="settings-section">
+            <h4 class="settings-section-title">DATA</h4>
+            <div class="reset-btn-wrap">
+              <button class="btn btn-secondary-soft back-btn-styled reset-hold-btn" id="reset-data-btn" type="button">
+                <span class="reset-fill" id="reset-fill"></span>
+                <span class="reset-label">RESET SAVE DATA</span>
+              </button>
+              <p class="reset-subtext">Hold for 5 seconds to reset your data</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAMPION SELECT POPUP -->
+    <div id="hero-select-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="game-promo-badge">PRE-BATTLE</div>
+        <h2 class="screen-heading modal-heading">SELECT YOUR CHAMPION</h2>
+        <p class="game-tagline modal-tagline">Pick a warrior before entering the arena. Switch anytime from the Barracks.</p>
+        <div class="hero-carousel hero-carousel-modal" id="hero-select-carousel">
+          <button class="carousel-arrow carousel-arrow-left" id="hero-select-prev" type="button" aria-label="Previous champion">&#10094;</button>
+          <div class="hull-list hull-list-modal" id="hero-select-list"></div>
+          <button class="carousel-arrow carousel-arrow-right" id="hero-select-next" type="button" aria-label="Next champion">&#10095;</button>
+        </div>
+        <div class="carousel-dots" id="hero-select-dots"></div>
+        <button id="launch-btn" class="btn btn-action-green multi-pulse game-cta" type="button">ENTER THE ARENA</button>
+        <button id="hero-select-cancel" class="btn btn-secondary-soft back-btn-styled" type="button">CANCEL</button>
+      </div>
+    </div>
+
+    <!-- EXIT CONFIRMATION POPUP -->
+    <div id="exit-confirm-modal" class="modal-overlay hidden">
+      <div class="modal-card exit-modal-card">
+        <div class="game-promo-badge badge-danger">HOLD ON</div>
+        <h2 class="screen-heading modal-heading">EXIT GAME?</h2>
+        <p class="game-tagline modal-tagline">Are you sure you want to leave T ZERONE? Your progress is already saved.</p>
+        <div class="menu-row">
+          <button id="exit-confirm-yes" class="btn btn-secondary-soft back-btn-styled" type="button">EXIT</button>
+          <button id="exit-confirm-no" class="btn btn-action-green game-cta" type="button">STAY</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIT TO MAIN MENU CONFIRMATION (Pause screen) -->
+    <div id="quit-confirm-modal" class="modal-overlay hidden">
+      <div class="modal-card exit-modal-card">
+        <div class="game-promo-badge badge-danger">HOLD ON</div>
+        <h2 class="screen-heading modal-heading">QUIT TO MENU?</h2>
+        <p class="game-tagline modal-tagline">Are you sure you want to quit to the main menu? Any unsaved progress will be lost.</p>
+        <div class="menu-row">
+          <button id="quit-confirm-yes" class="btn btn-secondary-soft back-btn-styled" type="button">QUIT</button>
+          <button id="quit-confirm-no" class="btn btn-action-green game-cta" type="button">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESET SAVE DATA CONFIRMATION (Settings screen) -->
+    <div id="reset-confirm-modal" class="modal-overlay hidden">
+      <div class="modal-card exit-modal-card">
+        <div class="game-promo-badge badge-danger">WARNING</div>
+        <h2 class="screen-heading modal-heading">RESET DATA?</h2>
+        <p class="game-tagline modal-tagline">Are you sure you want to reset your data? Your high score, gold, upgrades, and champion selection will be erased.</p>
+        <div class="menu-row">
+          <button id="reset-confirm-yes" class="btn btn-secondary-soft back-btn-styled" type="button">CONFIRM</button>
+          <button id="reset-confirm-no" class="btn btn-action-green game-cta" type="button">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="game_script.js"></script>
+</body>
+</html>
