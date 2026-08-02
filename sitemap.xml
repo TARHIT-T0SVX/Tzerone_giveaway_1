@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Sitemap — T ZERONE Giveaway (Main Website)
+
+  The site is a single-page app: Home, Dashboard, Form, Confirm, Success and Game are
+  all sections of index.html swapped in by navigateTo(), not separate documents. Listing
+  fabricated per-section URLs would advertise pages that return the same HTML and dilute
+  crawl budget, so only genuinely distinct documents are listed here.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://tzerone-giveaway.netlify.app/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
