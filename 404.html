@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#12121f">
+    <title>Page Not Found — T ZERONE</title>
+
+    <!-- A 404 must never be indexed: letting search engines keep this URL in their index
+         is how "not found" pages end up ranking for your brand. -->
+    <meta name="robots" content="noindex, follow">
+    <meta name="description" content="This page could not be found on the T ZERONE giveaway platform.">
+    <link rel="icon" href="https://raw.githubusercontent.com/TARHIT-T0SVX/All-image-t-z/refs/heads/main/TZERONE_OFFICIAL_LOGO.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!--
+      This page is deliberately self-contained rather than importing styles.css.
+      A 404 is served from an unknown, arbitrary URL depth (/a/b/c/typo), so a relative
+      stylesheet link would resolve against the wrong base and render the page unstyled —
+      exactly when a broken-looking page is most damaging. Inlining also means the error
+      page paints in a single round trip with no render-blocking request of its own.
+
+      Every animated property here is transform or opacity only, so the whole page
+      composites on the GPU and stays smooth at high refresh rates.
+    -->
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { -webkit-text-size-adjust: 100%; }
+
+        body {
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 20px calc(28px + env(safe-area-inset-bottom));
+            font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            color: #FFFFFF;
+            text-align: center;
+            background: #12121f;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* Fixed, non-repeating radial wash — a static paint, so it costs nothing
+               after the first frame. */
+            background-image:
+                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0, 168, 255, 0.20), transparent 70%),
+                radial-gradient(ellipse 70% 50% at 50% 110%, rgba(57, 255, 20, 0.10), transparent 70%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .error-shell {
+            width: 100%;
+            max-width: 460px;
+            padding: 34px 26px 30px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            box-shadow: 0 22px 48px rgba(0, 0, 0, 0.42);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            animation: shell-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes shell-in {
+            from { opacity: 0; transform: translate3d(0, 16px, 0) scale(0.985); }
+            to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+        }
+
+        .brand-logo {
+            width: 132px;
+            height: auto;
+            margin: 0 auto 22px;
+            display: block;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+        .error-code {
+            font-size: clamp(4.6rem, 22vw, 6.6rem);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #00D6FF 0%, #006BE8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            /* Fallback for the rare engine that ignores background-clip: text —
+               without it the heading would render fully transparent/invisible. */
+            -webkit-text-fill-color: transparent;
+        }
+
+        .error-title {
+            margin-top: 6px;
+            font-size: 1.18rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .error-desc {
+            margin-top: 12px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.66);
+        }
+
+        .divider {
+            height: 1px;
+            margin: 24px 0 22px;
+            border: 0;
+            background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.45), transparent);
+        }
+
+        .btn-row { display: flex; flex-direction: column; gap: 11px; }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            padding: 14px 18px;
+            border: 0;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 0.87rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            /* Only transform/opacity/box-shadow transition — never `all`, which forces the
+               engine to watch every animatable property on the element. */
+            transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease;
+            will-change: transform;
+        }
+        .btn:active { transform: scale(0.972); }
+
+        .btn-primary {
+            color: #FFFFFF;
+            background: #00D545;
+            box-shadow: 0 8px 22px rgba(0, 213, 69, 0.24);
+        }
+        .btn-primary svg { fill: #FFFFFF; }
+
+        .btn-secondary {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.13);
+        }
+
+        .btn svg { width: 17px; height: 17px; flex: 0 0 auto; }
+
+        .footer-note {
+            margin-top: 22px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.09em;
+            color: rgba(255, 255, 255, 0.32);
+            text-transform: uppercase;
+        }
+
+        /* Respect the OS "reduce motion" setting — vestibular-triggered motion sickness is
+           a real accessibility concern, and honouring this is also strictly cheaper. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="error-shell" role="main">
+        <img class="brand-logo"
+             src="https://raw.githubusercontent.com/TARHIT-T0SVX/All-image-t-z/refs/heads/main/TZERONE_OFFICIAL_LOGO.png"
+             alt="T ZERONE" width="132" height="44" decoding="async"
+             draggable="false"
+             oncontextmenu="return false"
+             onerror="this.style.display='none'">
+
+        <p class="error-code">404</p>
+        <h1 class="error-title">Page Not Found</h1>
+        <p class="error-desc">
+            This page doesn&rsquo;t exist, or it may have been moved.
+            Head back to the giveaway to register your Game&nbsp;ID and track your entry.
+        </p>
+
+        <hr class="divider">
+
+        <div class="btn-row">
+            <a class="btn btn-primary" href="/">
+                <svg viewBox="0 0 48 48" fill="currentColor" aria-hidden="true"><path d="M24,2a1.1,1.1,0,0,0-.7.3L4.6,19.2A2,2,0,0,0,4,20.7V44H19V27.9H29V44H44V20.7a2,2,0,0,0-.6-1.5L24.7,2.3A1.1,1.1,0,0,0,24,2Z"/></svg>
+                Back to Home
+            </a>
+            <a class="btn btn-secondary" href="https://www.facebook.com/tzerone01" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                Contact T ZERONE
+            </a>
+        </div>
+
+        <p class="footer-note">&copy; T ZERONE</p>
+    </main>
+
+</body>
+</html>
